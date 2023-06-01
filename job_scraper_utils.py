@@ -1,6 +1,11 @@
-#!/miniconda3/bin/python
+#!/Users/joshkorol/miniconda3/bin/python3
+import time
 from selenium import webdriver
-from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 """
 Copyright Josh Korol 2023
 All Rights Reserved
@@ -23,13 +28,18 @@ def scrape_job_listings():
 TODO add documentation
 """
 def scrape_dice():
-    # TODO keep in mind the strings will need %20 instead of spcaes
-    driver = webdriver.Chrome()
-    driver.get('https:/www.dice.com')
-    # find releveant elements
-    input_element = driver.find_element_by_id('typeaheadInput')
-    input_element.send_keys('Software Engineer')
-    button_element = driver.find_element_by_id('submitSearch-button')
-    button_element.click()
+    # Create ChromeOptions object
+    options = Options()
+    options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 
+    #options.add_experimental_option("detach", True)
+    chrome_driver = "/usr/local/bin/chromedriver"
+    driver = webdriver.Chrome(chrome_driver, service=Service(ChromeDriverManager().install()), options=options)
+    driver.get('https://www.dice.com')
+
+    # find releveant elements
+    input_job_element = driver.find_element(By.ID, "typeaheadInput").send_keys("JOB NAME")
+    input_location_element = driver.find_element(By.ID, "google-location-search").send_keys("Atlanta, GA, USA"+ Keys.ENTER)
+
+    # now search through query
     driver.quit()
