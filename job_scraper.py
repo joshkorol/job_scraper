@@ -2,7 +2,9 @@
 import requests
 from bs4 import BeautifulSoup
 """
-Author: Josh Korol
+Copyright 2023 Josh Korol
+All Rights Reserved
+
 Created: May 31, 2023
 
 This script is a tool I use to scrape job listings across popular websites such as Linkedin, Wayup, Dice, and Indeed.
