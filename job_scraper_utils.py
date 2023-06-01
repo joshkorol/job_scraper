@@ -31,4 +31,7 @@ def scrape_dice():
     response = requests.get("dice.com")
     # create object to parse htmld
     soup = BeautifulSoup(response.content, 'html.parser')
-    job_elements = soup.find_all('div', class_='job-listing')
+    
+    # fill in search box
+    input_job = 
+    
