@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-import requests
+#!/miniconda3/bin/python
+from selenium import webdriver
 from bs4 import BeautifulSoup
 """
 Copyright Josh Korol 2023
@@ -17,21 +17,19 @@ TODO add documentation
 """
 def scrape_job_listings():
     # TODO: handle params from config file, etc.
-
-    # send get req
-    response = requests.get(url)
-    # create object to parse htmld
-    soup = BeautifulSoup(response.content, 'html.parser')
-    job_elements = soup.find_all('div', class_='job-listing')
+    print()
 
 """
 TODO add documentation
 """
 def scrape_dice():
-    response = requests.get("dice.com")
-    # create object to parse htmld
-    soup = BeautifulSoup(response.content, 'html.parser')
-    
-    # fill in search box
-    input_job = 
-    
+    # TODO keep in mind the strings will need %20 instead of spcaes
+    driver = webdriver.Chrome()
+    driver.get('https:/www.dice.com')
+    # find releveant elements
+    input_element = driver.find_element_by_id('typeaheadInput')
+    input_element.send_keys('Software Engineer')
+    button_element = driver.find_element_by_id('submitSearch-button')
+    button_element.click()
+
+    driver.quit()
