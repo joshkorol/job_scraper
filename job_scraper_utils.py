@@ -12,8 +12,11 @@ Usage:
 - Pass the input file path as a command-line argument.
 """
 
+"""
+TODO add documentation
+"""
 def scrape_job_listings():
-    # TODO: handle 
+    # TODO: handle params from config file, etc.
 
     # send get req
     response = requests.get(url)
@@ -21,3 +24,11 @@ def scrape_job_listings():
     soup = BeautifulSoup(response.content, 'html.parser')
     job_elements = soup.find_all('div', class_='job-listing')
 
+"""
+TODO add documentation
+"""
+def scrape_dice():
+    response = requests.get("dice.com")
+    # create object to parse htmld
+    soup = BeautifulSoup(response.content, 'html.parser')
+    job_elements = soup.find_all('div', class_='job-listing')
