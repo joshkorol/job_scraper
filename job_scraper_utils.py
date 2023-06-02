@@ -47,10 +47,15 @@ def create_driver(chrome_driver_directory: str="/usr/local/bin/chromedriver", dr
 Calculates the square of a given number.
 
 Args:
-    number (int): The number to calculate the square of.
+    query_options (Dict[str, List[str]]): The user's options for the query
+        key (str): The name of the query option
+        val (List[str]): The values for the query option
 
+        REMOTE OPTIONS:
+        "remote" -> [remote_only, exclude_remote, work_from_home]
+        "employment_type" -> [full_time, part_time, contract, third_party]
 Returns:
-    int: The square of the given number.
+    
 """
 def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
     driver = create_driver()
@@ -63,25 +68,23 @@ def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
     
     # - - - filter results - - -
     # TODO: implement control about hybrid/remote
-
     # REMOTE OPTIONS
     time.sleep(3)
-    remote, exclude_remote, work_from_home = query_options["remote"]
-    if :
-
+    remote_only, exclude_remote, work_from_home = query_options["remote"]
+    if remote_only:
         exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Remote Only)]//button[@aria-label="Filter Search Results by Remote Only"]')
         exclude_remote_button.click()
-
+    if exclude_remote:
         exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Exclude Remote"]')
         exclude_remote_button.click()
-
+    if work_from_home:
         work_from_home_button = driver.find_element(By.XPATH, '//span[contains(text(), "Work From Home Available")]//button[@aria-label="Filter Search Results by Work From Home Available"]')
         work_from_home_button.click()
 
-    print("Completed")
-
+    print("Completed Remote Options")
     # EMPLOYMENT TYPE
     
-
+    full_time, part_time, contract, third_party = query_options["employment_type"]
+    
 
     # now search through query
