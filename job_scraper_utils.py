@@ -27,14 +27,17 @@ def scrape_job_listings():
 """
 TODO add documentation
 """
-def scrape_dice():
-    # Create ChromeOptions object
+def create_driver(chrome_driver_directory: str, options: Options) -> webdriver:
+    return webdriver.Chrome(chrome_driver_directory, service=Service(ChromeDriverManager().install()), options=options)
+"""
+TODO add documentation
+"""
+def scrape_dice(query_options: list[str]):
     options = Options()
     #options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-
     options.add_experimental_option("detach", True)
-    chrome_driver = "/usr/local/bin/chromedriver"
-    driver = webdriver.Chrome(chrome_driver, service=Service(ChromeDriverManager().install()), options=options)
+
+    driver = create_driver("/usr/local/bin/chromedriver", options)
     driver.get('https://www.dice.com')
 
     # find releveant elements
@@ -44,13 +47,23 @@ def scrape_dice():
     
     # - - - filter results - - -
     # TODO: implement control about hybrid/remote
-    # exclude remote options
-    time.sleep(3)
-    exclude_remote_button = driver.find_element(By.XPATH, '//button[@aria-label="Filter Search Results by Exclude Remote"]')
-    exclude_remote_button.click()
 
-    work_from_home_button = driver.find_element(By.XPATH, '//button[@aria-label="Filter Search Results by Work From Home Available"]')
-    work_from_home_button.click()
+    # REMOTE OPTIONS
+    time.sleep(3)
+    if remote:
+        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Remote Only"]')
+        exclude_remote_button.click()
+
+        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Exclude Remote"]')
+        exclude_remote_button.click()
+
+        work_from_home_button = driver.find_element(By.XPATH, '//span[contains(text(), "Work From Home Available")]//button[@aria-label="Filter Search Results by Work From Home Available"]')
+        work_from_home_button.click()
+
     print("Completed")
+
+    # EMPLOYMENT TYPE
+    
+
+
     # now search through query
-    driver.quit()
