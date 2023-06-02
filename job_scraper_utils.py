@@ -69,22 +69,33 @@ def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
     # - - - filter results - - -
     # TODO: implement control about hybrid/remote
     # REMOTE OPTIONS
+    """
+    Helper function for clicking button
+    
+    Args:
+        key (str): Option key
+        by (By): By enum for the find_element() method
+        value (str): Value of the find_element() method
+    """
+    def click_button(key: str, by: By, value: str):
+        if key == "remote":
+            driver.find_element(by, '//span[contains(text(), "{value}")]//button[@aria-label="Filter Search Results by {value}"]').click()
+        elif key == "employment_type":
+            driver.find_element(by, value)
+
     time.sleep(3)
     remote_only, exclude_remote, work_from_home = query_options["remote"]
     if remote_only:
-        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Remote Only)]//button[@aria-label="Filter Search Results by Remote Only"]')
-        exclude_remote_button.click()
+        click_button(By.XPATH, "Remote Only")
     if exclude_remote:
-        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Exclude Remote"]')
-        exclude_remote_button.click()
+         click_button(By.XPATH, "Exclude Remote")
     if work_from_home:
-        work_from_home_button = driver.find_element(By.XPATH, '//span[contains(text(), "Work From Home Available")]//button[@aria-label="Filter Search Results by Work From Home Available"]')
-        work_from_home_button.click()
+        click_button(By.XPATH, "Work From Home Available")
 
     print("Completed Remote Options")
     # EMPLOYMENT TYPE
-    
     full_time, part_time, contract, third_party = query_options["employment_type"]
-    
+
+
 
     # now search through query
