@@ -1,6 +1,6 @@
 #!/Users/joshkorol/miniconda3/bin/python3
 import time
-from typing import List, Any
+from typing import List, Dict, Any
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -26,14 +26,15 @@ def scrape_job_listings():
     print()
 
 """
-TODO add documentation
+Creates a Chrome driver object.
+
+Args: 
+    chrome_drive_directory (str): The directory to your chrome driver, default
+
+Returns:
+
 """
-def create_driver(chrome_driver_directory: str, options: Options) -> webdriver:
-    return webdriver.Chrome(chrome_driver_directory, service=Service(ChromeDriverManager().install()), options=options)
-"""
-TODO add documentation
-"""
-def scrape_dice(query_options: List[str] =None, driver_options: List[List[Any]] =[["e","detach", True]]):
+def create_driver(chrome_driver_directory: str="/usr/local/bin/chromedriver", driver_options: List[List[Any]]=[["e","detach", True]]) -> webdriver:
     options = Options()
     for list in driver_options:
         params = list[1:]
@@ -41,8 +42,18 @@ def scrape_dice(query_options: List[str] =None, driver_options: List[List[Any]] 
             options.add_experimental_option(*params)
         else:
             options.add_argument(*params)
+    return webdriver.Chrome(chrome_driver_directory, service=Service(ChromeDriverManager().install()), options=options)
+ """
+Calculates the square of a given number.
 
-    driver = create_driver("/usr/local/bin/chromedriver", options)
+Args:
+    number (int): The number to calculate the square of.
+
+Returns:
+    int: The square of the given number.
+"""
+def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
+    driver = create_driver()
     driver.get('https://www.dice.com')
 
     # find releveant elements
@@ -55,8 +66,10 @@ def scrape_dice(query_options: List[str] =None, driver_options: List[List[Any]] 
 
     # REMOTE OPTIONS
     time.sleep(3)
-    if remote:
-        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Remote Only"]')
+    remote, exclude_remote, work_from_home = query_options["remote"]
+    if :
+
+        exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Remote Only)]//button[@aria-label="Filter Search Results by Remote Only"]')
         exclude_remote_button.click()
 
         exclude_remote_button = driver.find_element(By.XPATH, '//span[contains(text(), "Exclude Remote")]//button[@aria-label="Filter Search Results by Exclude Remote"]')
