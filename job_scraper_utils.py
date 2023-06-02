@@ -1,5 +1,6 @@
 #!/Users/joshkorol/miniconda3/bin/python3
 import time
+from typing import List, Any
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -32,10 +33,14 @@ def create_driver(chrome_driver_directory: str, options: Options) -> webdriver:
 """
 TODO add documentation
 """
-def scrape_dice(query_options: list[str]):
+def scrape_dice(query_options: List[str] =None, driver_options: List[List[Any]] =[["e","detach", True]]):
     options = Options()
-    #options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-    options.add_experimental_option("detach", True)
+    for list in driver_options:
+        params = list[1:]
+        if list[0] == 'e':
+            options.add_experimental_option(*params)
+        else:
+            options.add_argument(*params)
 
     driver = create_driver("/usr/local/bin/chromedriver", options)
     driver.get('https://www.dice.com')
