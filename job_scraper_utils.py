@@ -21,6 +21,8 @@ Usage:
 """
 TODO add documentation
 """
+translator = {"wfh":"Work From Home", "rem":"Remote Only", "wfh":"Work From Home Available"}
+
 def scrape_job_listings():
     # TODO: handle params from config file, etc.
     print()
@@ -43,8 +45,9 @@ def create_driver(chrome_driver_directory: str="/usr/local/bin/chromedriver", dr
         else:
             options.add_argument(*params)
     return webdriver.Chrome(chrome_driver_directory, service=Service(ChromeDriverManager().install()), options=options)
- """
-Calculates the square of a given number.
+
+"""
+Scrapes dice
 
 Args:
     query_options (Dict[str, List[str]]): The user's options for the query
@@ -57,7 +60,7 @@ Args:
 Returns:
     
 """
-def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
+def scrape_dice(query_options: Dict[str, List[str]]={"remote":"wfh"}):
     driver = create_driver()
     driver.get('https://www.dice.com')
 
@@ -77,21 +80,16 @@ def scrape_dice(query_options: List[Dict[str, List[str]]]=None):
         by (By): By enum for the find_element() method
         value (str): Value of the find_element() method
     """
-    def click_button(key: str, by: By, value: str):
+    def click_button(key: str, by: By, value_key: str):
         if key == "remote":
-            driver.find_element(by, '//span[contains(text(), "{value}")]//button[@aria-label="Filter Search Results by {value}"]').click()
+            value = translator[value_key]
+            driver.find_element(by, f'//span[contains(text(), "{value}")]//button[@aria-label="Filter Search Results by {value}"]').click()
         elif key == "employment_type":
             driver.find_element(by, value)
 
     time.sleep(3)
     remote_only, exclude_remote, work_from_home = query_options["remote"]
-    if remote_only:
-        click_button(By.XPATH, "Remote Only")
-    if exclude_remote:
-         click_button(By.XPATH, "Exclude Remote")
-    if work_from_home:
-        click_button(By.XPATH, "Work From Home Available")
-
+    click_button(key="remote", by=By.XPATH, value_key=query_options["remote"])
     print("Completed Remote Options")
     # EMPLOYMENT TYPE
     full_time, part_time, contract, third_party = query_options["employment_type"]
